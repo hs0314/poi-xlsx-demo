@@ -17,10 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.ArrayList;
+
 import java.util.List;
 
 @Service
@@ -29,7 +27,7 @@ public class ExcelDownloadService {
 
     // 엑셀 read
     public void createXlsxExcelFileBySax(HttpServletResponse response) throws Exception {
-        String targetFileName = "test_xlsx_small.xlsx";
+        String targetFileName = "test_xlsx.xlsx";
         File file = new File(FILE_PATH + targetFileName);
 
         if (!file.exists()) {
@@ -47,8 +45,7 @@ public class ExcelDownloadService {
         parser.parse(sheetSource);
         sheet.close();
 
-        List<String[]> res = new LinkedList<String[]>();
-        res = SheetHandler.getRowCache();
+        List<String[]> res = SheetHandler.getRowCache();
 
         createXlsxFile(res, response);
 
@@ -120,8 +117,8 @@ public class ExcelDownloadService {
         private static final String ROW_EVENT = "row";
         private static final String CELL_EVENT = "c";
 
-        private static List<String> cellCache = new LinkedList<String>();
-        private static List<String[]> rowCache = new LinkedList<String[]>();
+        private static List<String> cellCache = new ArrayList<>();
+        private static List<String[]> rowCache = new ArrayList<>();
 
         private SheetHandler(SharedStringsTable sst) {
             this.sst = sst;
